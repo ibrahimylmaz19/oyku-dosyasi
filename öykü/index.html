@@ -1,0 +1,1510 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Öykü Dosyası</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    :root {
+        --bg: #fff8f7;
+        --card: rgba(255,255,255,.82);
+        --text: #302b2d;
+        --muted: #8c7d82;
+        --pink: #d9899c;
+        --pink-dark: #b9687d;
+        --pink-soft: #f8dfe5;
+        --border: #f0dfe3;
+        --white: #ffffff;
+        --shadow: 0 20px 60px rgba(120, 70, 85, .10);
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        background:
+            radial-gradient(circle at 10% 10%, rgba(245, 194, 205, .35), transparent 28%),
+            radial-gradient(circle at 90% 80%, rgba(255, 220, 180, .28), transparent 28%),
+            var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    button,
+    input,
+    textarea {
+        font: inherit;
+    }
+
+    .app {
+        width: 100%;
+        max-width: 720px;
+        margin: auto;
+        padding: 25px 18px 50px;
+    }
+
+    /* TOP */
+
+    .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+    }
+
+    .brand {
+        font-size: 13px;
+        letter-spacing: 2px;
+        font-weight: 700;
+        color: var(--pink-dark);
+    }
+
+    .version {
+        font-size: 11px;
+        color: var(--muted);
+        background: rgba(255,255,255,.75);
+        padding: 7px 10px;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+    }
+
+    /* PROGRESS */
+
+    .progress-wrap {
+        display: none;
+        margin-bottom: 25px;
+    }
+
+    .progress-info {
+        display: flex;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+
+    .progress {
+        width: 100%;
+        height: 6px;
+        background: #f1e7e9;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, #d9899c, #e9a9b8);
+        border-radius: 20px;
+        transition: .4s ease;
+    }
+
+    /* SCREENS */
+
+    .screen {
+        display: none;
+        animation: fadeUp .45s ease;
+    }
+
+    .screen.active {
+        display: block;
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* HOME */
+
+    .home-card {
+        background: var(--card);
+        border: 1px solid rgba(240,223,227,.9);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(14px);
+        border-radius: 28px;
+        padding: 50px 32px;
+        text-align: center;
+    }
+
+    .icon {
+        width: 76px;
+        height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        border-radius: 24px;
+        background: var(--pink-soft);
+        font-size: 34px;
+    }
+
+    .eyebrow {
+        color: var(--pink-dark);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        margin-bottom: 12px;
+    }
+
+    h1 {
+        font-size: clamp(32px, 8vw, 48px);
+        letter-spacing: -1.5px;
+        margin-bottom: 15px;
+    }
+
+    .home-description {
+        max-width: 500px;
+        margin: auto;
+        line-height: 1.8;
+        color: var(--muted);
+        font-size: 15px;
+    }
+
+    .notice {
+        margin: 25px 0;
+        padding: 15px;
+        background: #fff6f7;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        font-size: 13px;
+        color: #786a6e;
+        line-height: 1.6;
+    }
+
+    /* BUTTON */
+
+    .primary-btn {
+        width: 100%;
+        border: none;
+        cursor: pointer;
+        color: white;
+        background: linear-gradient(135deg, #d9899c, #c8758b);
+        padding: 16px 20px;
+        border-radius: 15px;
+        font-weight: 700;
+        font-size: 14px;
+        transition: .25s;
+        box-shadow: 0 10px 25px rgba(201,117,139,.20);
+    }
+
+    .primary-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 30px rgba(201,117,139,.27);
+    }
+
+    .secondary-btn {
+        width: 100%;
+        border: 1px solid var(--border);
+        cursor: pointer;
+        color: var(--text);
+        background: white;
+        padding: 15px 20px;
+        border-radius: 15px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: .2s;
+    }
+
+    .secondary-btn:hover {
+        background: #fff7f8;
+    }
+
+    .button-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    /* FORM */
+
+    .question-card {
+        background: rgba(255,255,255,.85);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        border-radius: 24px;
+        padding: 30px;
+    }
+
+    .question-number {
+        font-size: 11px;
+        letter-spacing: 2px;
+        color: var(--pink-dark);
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .question-title {
+        font-size: 25px;
+        letter-spacing: -.5px;
+        margin-bottom: 8px;
+    }
+
+    .question-sub {
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 24px;
+    }
+
+    /* CHOICES */
+
+    .choices {
+        display: grid;
+        gap: 10px;
+    }
+
+    .choice {
+        border: 1px solid var(--border);
+        background: white;
+        border-radius: 15px;
+        padding: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: .2s;
+    }
+
+    .choice:hover {
+        border-color: #dfa0ae;
+        transform: translateY(-1px);
+    }
+
+    .choice.selected {
+        border-color: var(--pink);
+        background: #fff3f5;
+        box-shadow: 0 6px 18px rgba(217,137,156,.10);
+    }
+
+    .choice-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff0f3;
+        font-size: 19px;
+        flex-shrink: 0;
+    }
+
+    .choice-text strong {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 3px;
+    }
+
+    .choice-text span {
+        font-size: 12px;
+        color: var(--muted);
+    }
+
+    /* INPUTS */
+
+    .field {
+        margin-bottom: 18px;
+    }
+
+    .field label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    input,
+    textarea {
+        width: 100%;
+        border: 1px solid var(--border);
+        background: white;
+        border-radius: 13px;
+        padding: 14px;
+        outline: none;
+        color: var(--text);
+        transition: .2s;
+    }
+
+    input:focus,
+    textarea:focus {
+        border-color: var(--pink);
+        box-shadow: 0 0 0 4px rgba(217,137,156,.08);
+    }
+
+    textarea {
+        min-height: 110px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+
+    /* RESULT */
+
+    .result-card {
+        background: rgba(255,255,255,.88);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        border-radius: 25px;
+        overflow: hidden;
+    }
+
+    .result-header {
+        padding: 35px 30px;
+        background: linear-gradient(135deg, #fff0f3, #fffaf7);
+        text-align: center;
+    }
+
+    .result-header h2 {
+        font-size: 30px;
+        margin-bottom: 8px;
+    }
+
+    .result-header p {
+        color: var(--muted);
+        font-size: 13px;
+    }
+
+    .answers {
+        padding: 25px;
+    }
+
+    .answer {
+        padding: 17px 0;
+        border-bottom: 1px solid #f2e8ea;
+    }
+
+    .answer:last-child {
+        border-bottom: none;
+    }
+
+    .answer-question {
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 5px;
+    }
+
+    .answer-value {
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    /* COMPLETE */
+
+    .complete-card {
+        text-align: center;
+        background: rgba(255,255,255,.86);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        border-radius: 28px;
+        padding: 48px 30px;
+    }
+
+    .check {
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 25px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f8dfe5;
+        font-size: 30px;
+    }
+
+    .complete-card h2 {
+        font-size: 30px;
+        margin-bottom: 15px;
+    }
+
+    .complete-card p {
+        color: var(--muted);
+        line-height: 1.8;
+        font-size: 14px;
+    }
+
+    .final-message {
+        margin: 25px 0;
+        padding: 20px;
+        background: #fff7f8;
+        border-radius: 16px;
+        color: #66585d;
+        line-height: 1.8;
+        font-size: 14px;
+    }
+
+    /* FOOTER */
+
+    .footer {
+        text-align: center;
+        margin-top: 20px;
+        color: #b6a7ab;
+        font-size: 11px;
+    }
+
+    /* MOBILE */
+
+    @media(max-width: 600px) {
+        .app {
+            padding: 18px 12px 35px;
+        }
+
+        .home-card {
+            padding: 38px 22px;
+        }
+
+        .question-card {
+            padding: 23px 18px;
+        }
+
+        .question-title {
+            font-size: 22px;
+        }
+
+        .button-row {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="topbar">
+        <div class="brand">ÖYKÜ DOSYASI</div>
+        <div class="version">v1.0</div>
+    </div>
+
+    <div class="progress-wrap" id="progressWrap">
+        <div class="progress-info">
+            <span id="progressText">1 / 5</span>
+            <span id="progressPercent">%20</span>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+
+
+    <!-- HOME -->
+
+    <section class="screen active" id="home">
+
+        <div class="home-card">
+
+            <div class="icon">🌷</div>
+
+            <div class="eyebrow">KİŞİSEL DOSYA</div>
+
+            <h1>Biraz seni tanıyalım.</h1>
+
+            <p class="home-description">
+                Bu küçük dosyanın amacı seni çözmek değil.
+                Seni, kendi anlattığın şekilde biraz daha tanımak.
+            </p>
+
+            <div class="notice">
+                Burada doğru veya yanlış cevap yok.
+                <br>
+                İçinden geldiği gibi cevapla.
+            </div>
+
+            <button class="primary-btn" onclick="startApp()">
+                DOSYAYI OLUŞTUR
+            </button>
+
+            <div style="margin-top:12px;">
+                <button class="secondary-btn" onclick="showSaved()">
+                    KAYITLI CEVAPLAR
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PAGE 1 -->
+
+    <section class="screen" id="page1">
+
+        <div class="question-card">
+
+            <div class="question-number">01 / 05</div>
+
+            <div class="question-title">
+                Önce seni biraz tanıyalım.
+            </div>
+
+            <div class="question-sub">
+                Basit sorularla başlayalım.
+            </div>
+
+            <div class="field">
+                <label>Sana nasıl hitap edilmesini seversin?</label>
+                <input id="hitap" type="text" placeholder="Örneğin: Öykü, Öykücüm, ismimle...">
+            </div>
+
+            <div class="field">
+                <label>Seni en iyi anlatan 3 kelime?</label>
+                <input id="kelimeler" type="text" placeholder="Örneğin: sakin, eğlenceli, meraklı">
+            </div>
+
+            <div class="field">
+                <label>Şu sıralar seni en çok anlatan şarkı?</label>
+                <input id="sarki" type="text" placeholder="Şarkı adı / sanatçı">
+            </div>
+
+            <div class="button-row">
+                <button class="secondary-btn" onclick="goHome()">Geri</button>
+                <button class="primary-btn" onclick="nextPage(2)">Devam Et</button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PAGE 2 -->
+
+    <section class="screen" id="page2">
+
+        <div class="question-card">
+
+            <div class="question-number">02 / 05</div>
+
+            <div class="question-title">
+                Küçük tercihler.
+            </div>
+
+            <div class="question-sub">
+                Çok düşünme. İlk hangisi içinden geliyorsa onu seç.
+            </div>
+
+
+            <div class="field">
+                <label>☕ İçecek?</label>
+
+                <div class="choices">
+
+                    <div class="choice" data-group="icecek" onclick="selectChoice(this,'icecek','Kahve')">
+                        <div class="choice-icon">☕</div>
+                        <div class="choice-text">
+                            <strong>Kahve</strong>
+                            <span>Bir kahvenin bahanesi çoktur.</span>
+                        </div>
+                    </div>
+
+                    <div class="choice" data-group="icecek" onclick="selectChoice(this,'icecek','Çay')">
+                        <div class="choice-icon">🍵</div>
+                        <div class="choice-text">
+                            <strong>Çay</strong>
+                            <span>Sohbetin yanında iyi gider.</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="field">
+                <label>🌿 Boş bir akşam?</label>
+
+                <div class="choices">
+
+                    <div class="choice" data-group="aktivite" onclick="selectChoice(this,'aktivite','Yürüyüş')">
+                        <div class="choice-icon">🚶‍♀️</div>
+                        <div class="choice-text">
+                            <strong>Yürüyüş</strong>
+                            <span>Biraz hava, biraz sohbet.</span>
+                        </div>
+                    </div>
+
+                    <div class="choice" data-group="aktivite" onclick="selectChoice(this,'aktivite','Uzun sohbet')">
+                        <div class="choice-icon">💬</div>
+                        <div class="choice-text">
+                            <strong>Uzun sohbet</strong>
+                            <span>Saatin nasıl geçtiğini anlamamak.</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="field">
+                <label>🌙 Hangi saatler?</label>
+
+                <div class="choices">
+
+                    <div class="choice" data-group="zaman" onclick="selectChoice(this,'zaman','Gece')">
+                        <div class="choice-icon">🌙</div>
+                        <div class="choice-text">
+                            <strong>Gece</strong>
+                            <span>Gece sohbetlerinin ayrı bir havası var.</span>
+                        </div>
+                    </div>
+
+                    <div class="choice" data-group="zaman" onclick="selectChoice(this,'zaman','Gündüz')">
+                        <div class="choice-icon">☀️</div>
+                        <div class="choice-text">
+                            <strong>Gündüz</strong>
+                            <span>Günün enerjisini seviyorum.</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="button-row">
+                <button class="secondary-btn" onclick="showPage(1)">Geri</button>
+                <button class="primary-btn" onclick="nextPage(3)">Devam Et</button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PAGE 3 -->
+
+    <section class="screen" id="page3">
+
+        <div class="question-card">
+
+            <div class="question-number">03 / 05</div>
+
+            <div class="question-title">
+                Biraz daha detay.
+            </div>
+
+            <div class="question-sub">
+                Şimdi seçenekleri biraz çeşitlendirelim.
+            </div>
+
+
+            <div class="field">
+                <label>🌊 Hangisi?</label>
+
+                <div class="choices">
+
+                    <div class="choice" data-group="mekan" onclick="selectChoice(this,'mekan','Deniz')">
+                        <div class="choice-icon">🌊</div>
+                        <div class="choice-text">
+                            <strong>Deniz</strong>
+                            <span>Sahil, dalga sesi, biraz huzur.</span>
+                        </div>
+                    </div>
+
+                    <div class="choice" data-group="mekan" onclick="selectChoice(this,'mekan','Doğa')">
+                        <div class="choice-icon">🌲</div>
+                        <div class="choice-text">
+                            <strong>Doğa</strong>
+                            <span>Yeşillik, sakinlik ve temiz hava.</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="field">
+                <label>🍰 Hangisi?</label>
+
+                <div class="choices">
+
+                    <div class="choice" data-group="tat" onclick="selectChoice(this,'tat','Tatlı')">
+                        <div class="choice-icon">🍰</div>
+                        <div class="choice-text">
+                            <strong>Tatlı</strong>
+                            <span>Hayat biraz tatlı olsun.</span>
+                        </div>
+                    </div>
+
+                    <div class="choice" data-group="tat" onclick="selectChoice(this,'tat','Tuzlu')">
+                        <div class="choice-icon">🍟</div>
+                        <div class="choice-text">
+                            <strong>Tuzlu</strong>
+                            <span>Tatlıdan önce tuzlu.</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="field">
+                <label>🎬 Boş zaman?</label>
+
+                <div class="choices">
+
+                    <div class="choice" data-group="ekran" onclick="selectChoice(this,'ekran','Film')">
+                        <div class="choice-icon">🎬</div>
+                        <div class="choice-text">
+                            <strong>Film</strong>
+                            <span>Tek oturuşta bir hikâye.</span>
+                        </div>
+                    </div>
+
+                    <div class="choice" data-group="ekran" onclick="selectChoice(this,'ekran','Dizi')">
+                        <div class="choice-icon">📺</div>
+                        <div class="choice-text">
+                            <strong>Dizi</strong>
+                            <span>Bölüm bitince bir tane daha.</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="button-row">
+                <button class="secondary-btn" onclick="showPage(2)">Geri</button>
+                <button class="primary-btn" onclick="nextPage(4)">Devam Et</button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PAGE 4 -->
+
+    <section class="screen" id="page4">
+
+        <div class="question-card">
+
+            <div class="question-number">04 / 05</div>
+
+            <div class="question-title">
+                Tamam, biraz daha sen.
+            </div>
+
+            <div class="question-sub">
+                Burada cevapların daha çok seni anlatıyor.
+            </div>
+
+
+            <div class="field">
+                <label>🎲 Plan konusunda hangisisin?</label>
+
+                <div class="choices">
+
+                    <div class="choice" data-group="plan" onclick="selectChoice(this,'plan','Spontane')">
+                        <div class="choice-icon">🎲</div>
+                        <div class="choice-text">
+                            <strong>Spontane</strong>
+                            <span>O an ne gelirse.</span>
+                        </div>
+                    </div>
+
+                    <div class="choice" data-group="plan" onclick="selectChoice(this,'plan','Önceden plan')">
+                        <div class="choice-icon">📅</div>
+                        <div class="choice-text">
+                            <strong>Önceden plan</strong>
+                            <span>Ne yapacağımız belli olsun.</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="field">
+                <label>📱 İletişim?</label>
+
+                <div class="choices">
+
+                    <div class="choice" data-group="iletisim" onclick="selectChoice(this,'iletisim','Mesajlaşmak')">
+                        <div class="choice-icon">💬</div>
+                        <div class="choice-text">
+                            <strong>Mesajlaşmak</strong>
+                            <span>Mesajla anlatmak daha kolay.</span>
+                        </div>
+                    </div>
+
+                    <div class="choice" data-group="iletisim" onclick="selectChoice(this,'iletisim','Aramak')">
+                        <div class="choice-icon">📞</div>
+                        <div class="choice-text">
+                            <strong>Aramak</strong>
+                            <span>Sesini duymak daha güzel.</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="field">
+                <label>🌅 Hangisi daha güzel?</label>
+
+                <div class="choices">
+
+                    <div class="choice" data-group="gun" onclick="selectChoice(this,'gun','Gün doğumu')">
+                        <div class="choice-icon">🌅</div>
+                        <div class="choice-text">
+                            <strong>Gün doğumu</strong>
+                            <span>Yeni bir gün hissi.</span>
+                        </div>
+                    </div>
+
+                    <div class="choice" data-group="gun" onclick="selectChoice(this,'gun','Gün batımı')">
+                        <div class="choice-icon">🌇</div>
+                        <div class="choice-text">
+                            <strong>Gün batımı</strong>
+                            <span>Günün en güzel tarafı.</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="button-row">
+                <button class="secondary-btn" onclick="showPage(3)">Geri</button>
+                <button class="primary-btn" onclick="nextPage(5)">Devam Et</button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PAGE 5 -->
+
+    <section class="screen" id="page5">
+
+        <div class="question-card">
+
+            <div class="question-number">05 / 05</div>
+
+            <div class="question-title">
+                Son birkaç şey.
+            </div>
+
+            <div class="question-sub">
+                Bunların cevabı tamamen sana kalmış.
+            </div>
+
+
+            <div class="field">
+                <label>Seni en kolay ne mutlu eder?</label>
+
+                <textarea
+                    id="mutlu"
+                    placeholder="Küçük bir şey bile olabilir..."
+                ></textarea>
+            </div>
+
+
+            <div class="field">
+                <label>Bir insanda en çok neye değer verirsin?</label>
+
+                <textarea
+                    id="deger"
+                    placeholder="Samimiyet, güven, anlayış..."
+                ></textarea>
+            </div>
+
+
+            <div class="field">
+                <label>Seni bir insandan en hızlı soğutan şey nedir?</label>
+
+                <textarea
+                    id="sogutan"
+                    placeholder="Bir davranış, bir tavır..."
+                ></textarea>
+            </div>
+
+
+            <div class="field">
+                <label>Birlikte yapmak istediğin küçük bir şey var mı?</label>
+
+                <textarea
+                    id="birlikte"
+                    placeholder="Çok büyük bir şey olmasına gerek yok."
+                ></textarea>
+            </div>
+
+
+            <div class="field">
+                <label>Eklemek istediğin başka bir şey?</label>
+
+                <textarea
+                    id="ekstra"
+                    placeholder="Burayı tamamen sana bırakıyorum."
+                ></textarea>
+            </div>
+
+
+            <div class="button-row">
+                <button class="secondary-btn" onclick="showPage(4)">Geri</button>
+                <button class="primary-btn" onclick="finish()">DOSYAYI TAMAMLA</button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- COMPLETE -->
+
+    <section class="screen" id="complete">
+
+        <div class="complete-card">
+
+            <div class="check">✓</div>
+
+            <h2>Teşekkürler Öykü.</h2>
+
+            <p>
+                Dosya başarıyla oluşturuldu.
+            </p>
+
+            <div class="final-message">
+                Bir insanı tanımak sadece sorularla olmuyor.
+
+                <br><br>
+
+                Biraz sohbet.
+                <br>
+                Birkaç yürüyüş.
+                <br>
+                Birkaç kahve.
+                <br>
+                Birkaç güzel anı.
+
+                <br><br>
+
+                Gerisini zaten zaman gösterir.
+            </div>
+
+            <button class="primary-btn" onclick="showSaved()">
+                CEVAPLARIMA BAK
+            </button>
+
+            <div style="margin-top:12px;">
+                <button class="secondary-btn" onclick="goHome()">
+                    ANA SAYFA
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SAVED -->
+
+    <section class="screen" id="saved">
+
+        <div class="result-card">
+
+            <div class="result-header">
+                <h2>Öykü Dosyası</h2>
+                <p>Kaydedilen cevaplar</p>
+            </div>
+
+            <div class="answers" id="answers"></div>
+
+        </div>
+
+        <div class="button-row">
+            <button class="secondary-btn" onclick="goHome()">
+                Ana Sayfa
+            </button>
+
+            <button class="primary-btn" onclick="editData()">
+                CEVAPLARI DÜZENLE
+            </button>
+        </div>
+
+        <div style="margin-top:12px;">
+            <button
+                class="secondary-btn"
+                onclick="deleteData()"
+                style="color:#b9687d;"
+            >
+                KAYITLI CEVAPLARI SİL
+            </button>
+        </div>
+
+    </section>
+
+
+    <div class="footer">
+        küçük bir dosya, biraz merak, bolca sohbet.
+    </div>
+
+</div>
+
+
+<script>
+
+    const STORAGE_KEY = "oykuDosyasi";
+
+    let answers = {
+        hitap: "",
+        kelimeler: "",
+        sarki: "",
+        icecek: "",
+        aktivite: "",
+        zaman: "",
+        mekan: "",
+        tat: "",
+        ekran: "",
+        plan: "",
+        iletisim: "",
+        gun: "",
+        mutlu: "",
+        deger: "",
+        sogutan: "",
+        birlikte: "",
+        ekstra: ""
+    };
+
+
+    /* ---------------------------
+       GENEL
+    ---------------------------- */
+
+    function getData() {
+
+        const saved = localStorage.getItem(STORAGE_KEY);
+
+        if (saved) {
+
+            try {
+                answers = {
+                    ...answers,
+                    ...JSON.parse(saved)
+                };
+            } catch (e) {
+                console.log("Kayıt okunamadı.");
+            }
+
+        }
+
+    }
+
+
+    function saveData() {
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(answers)
+        );
+
+    }
+
+
+    function hideAll() {
+
+        document.querySelectorAll(".screen").forEach(screen => {
+            screen.classList.remove("active");
+        });
+
+    }
+
+
+    function show(id) {
+
+        hideAll();
+
+        document
+            .getElementById(id)
+            .classList.add("active");
+
+    }
+
+
+    function showPage(number) {
+
+        show("page" + number);
+
+        updateProgress(number);
+
+        restoreInputs();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    function goHome() {
+
+        show("home");
+
+        document
+            .getElementById("progressWrap")
+            .style.display = "none";
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    function startApp() {
+
+        getData();
+
+        document
+            .getElementById("progressWrap")
+            .style.display = "block";
+
+        showPage(1);
+
+    }
+
+
+    function updateProgress(page) {
+
+        const total = 5;
+
+        const percent = Math.round(
+            (page / total) * 100
+        );
+
+        document.getElementById("progressText").innerText =
+            page + " / " + total;
+
+        document.getElementById("progressPercent").innerText =
+            "%" + percent;
+
+        document.getElementById("progressBar").style.width =
+            percent + "%";
+
+    }
+
+
+    /* ---------------------------
+       SEÇİMLER
+    ---------------------------- */
+
+    function selectChoice(element, group, value) {
+
+        document
+            .querySelectorAll(
+                '.choice[data-group="' + group + '"]'
+            )
+            .forEach(item => {
+                item.classList.remove("selected");
+            });
+
+        element.classList.add("selected");
+
+        answers[group] = value;
+
+        saveData();
+
+    }
+
+
+    /* ---------------------------
+       INPUTLAR
+    ---------------------------- */
+
+    function saveInputs() {
+
+        answers.hitap =
+            document.getElementById("hitap").value;
+
+        answers.kelimeler =
+            document.getElementById("kelimeler").value;
+
+        answers.sarki =
+            document.getElementById("sarki").value;
+
+        answers.mutlu =
+            document.getElementById("mutlu").value;
+
+        answers.deger =
+            document.getElementById("deger").value;
+
+        answers.sogutan =
+            document.getElementById("sogutan").value;
+
+        answers.birlikte =
+            document.getElementById("birlikte").value;
+
+        answers.ekstra =
+            document.getElementById("ekstra").value;
+
+        saveData();
+
+    }
+
+
+    function restoreInputs() {
+
+        const fields = [
+            "hitap",
+            "kelimeler",
+            "sarki",
+            "mutlu",
+            "deger",
+            "sogutan",
+            "birlikte",
+            "ekstra"
+        ];
+
+        fields.forEach(id => {
+
+            const element = document.getElementById(id);
+
+            if (element && answers[id]) {
+                element.value = answers[id];
+            }
+
+        });
+
+
+        document
+            .querySelectorAll(".choice")
+            .forEach(choice => {
+
+                choice.classList.remove("selected");
+
+                const group = choice.dataset.group;
+
+                if (
+                    group &&
+                    answers[group] &&
+                    choice.innerText.includes(answers[group])
+                ) {
+
+                    choice.classList.add("selected");
+
+                }
+
+            });
+
+    }
+
+
+    /* ---------------------------
+       SAYFA GEÇİŞİ
+    ---------------------------- */
+
+    function nextPage(page) {
+
+        saveInputs();
+
+        showPage(page);
+
+    }
+
+
+    /* ---------------------------
+       TAMAMLAMA
+    ---------------------------- */
+
+    function finish() {
+
+        saveInputs();
+
+        saveData();
+
+        document
+            .getElementById("progressWrap")
+            .style.display = "none";
+
+        show("complete");
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    /* ---------------------------
+       KAYITLI CEVAPLAR
+    ---------------------------- */
+
+    function escapeHTML(text) {
+
+        if (!text) return "-";
+
+        return String(text)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    function showSaved() {
+
+        getData();
+
+        const container =
+            document.getElementById("answers");
+
+        const list = [
+
+            ["Sana nasıl hitap edilmeli?", answers.hitap],
+
+            ["Seni anlatan 3 kelime?", answers.kelimeler],
+
+            ["Şu sıralar seni anlatan şarkı?", answers.sarki],
+
+            ["İçecek tercihi", answers.icecek],
+
+            ["Boş bir akşam", answers.aktivite],
+
+            ["Gece / gündüz", answers.zaman],
+
+            ["Deniz / doğa", answers.mekan],
+
+            ["Tatlı / tuzlu", answers.tat],
+
+            ["Film / dizi", answers.ekran],
+
+            ["Plan şekli", answers.plan],
+
+            ["İletişim şekli", answers.iletisim],
+
+            ["Gün doğumu / gün batımı", answers.gun],
+
+            ["Seni en kolay ne mutlu eder?", answers.mutlu],
+
+            ["Bir insanda en çok neye değer verirsin?", answers.deger],
+
+            ["Seni en hızlı soğutan şey?", answers.sogutan],
+
+            ["Birlikte yapmak istediğin küçük şey?", answers.birlikte],
+
+            ["Eklemek istediğin şey?", answers.ekstra]
+
+        ];
+
+
+        container.innerHTML = "";
+
+
+        list.forEach(item => {
+
+            const div = document.createElement("div");
+
+            div.className = "answer";
+
+            div.innerHTML = `
+                <div class="answer-question">
+                    ${escapeHTML(item[0])}
+                </div>
+
+                <div class="answer-value">
+                    ${escapeHTML(item[1])}
+                </div>
+            `;
+
+            container.appendChild(div);
+
+        });
+
+
+        document
+            .getElementById("progressWrap")
+            .style.display = "none";
+
+        show("saved");
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    /* ---------------------------
+       DÜZENLE
+    ---------------------------- */
+
+    function editData() {
+
+        startApp();
+
+    }
+
+
+    /* ---------------------------
+       SİL
+    ---------------------------- */
+
+    function deleteData() {
+
+        const confirmDelete =
+            confirm(
+                "Kaydedilen tüm cevaplar silinsin mi?"
+            );
+
+        if (!confirmDelete) return;
+
+        localStorage.removeItem(STORAGE_KEY);
+
+        answers = {
+            hitap: "",
+            kelimeler: "",
+            sarki: "",
+            icecek: "",
+            aktivite: "",
+            zaman: "",
+            mekan: "",
+            tat: "",
+            ekran: "",
+            plan: "",
+            iletisim: "",
+            gun: "",
+            mutlu: "",
+            deger: "",
+            sogutan: "",
+            birlikte: "",
+            ekstra: ""
+        };
+
+        alert("Cevaplar silindi.");
+
+        goHome();
+
+    }
+
+
+    /* ---------------------------
+       SAYFA AÇILINCA
+    ---------------------------- */
+
+    getData();
+
+</script>
+
+</body>
+</html>
+```
